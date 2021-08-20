@@ -13,7 +13,7 @@ function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
   cnv.mousePressed(toggleSound);
   musicToggle = false;
-  music = loadSound('rainbow.mp3');
+
   rectMode(CENTER);
 
   for(let i=0; i<num_points; i++){
@@ -71,7 +71,7 @@ function toggleSound(){
   musicToggle = !musicToggle;
   if(musicToggle){
     userStartAudio();
-    music.play();
+    music = loadSound('rainbow.mp3',loaded);
   }
   else{
     music.stop();
