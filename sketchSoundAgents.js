@@ -5,8 +5,15 @@ let agents = [];
 
 let frate = 0;
 
+let cnv; //Canvas
+let music; //music file
+let musicToggle;
+
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  cnv = createCanvas(windowWidth, windowHeight);
+  cnv.mousePressed(toggleSound);
+  musicToggle = false;
+
   rectMode(CENTER);
 
   for(let i=0; i<num_points; i++){
@@ -42,4 +49,15 @@ function draw() {
     frate = frameRate();
   }
   text(nf(frate,2,0), 10, 30);
+}
+
+function toggleSound(){
+  musicToggle = !musicToggle;
+  if(musicToggle){
+    userStartAudio();
+    music = loadSound('rainbow.mp3', loaded);
+  }
+  else{
+    music.stop();
+  }
 }
