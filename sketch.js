@@ -6,13 +6,11 @@
 var song;
 var sliderRate;
 var sliderPan;
+var cnv;
 
 function setup() {
-  createCanvas(200, 200);
-  song = loadSound('rainbow.mp3', loaded);
-  song.setVolume(0.5);
-  sliderRate = createSlider(0, 1.5, 1, 0.01);
-  sliderPan = createSlider(-1, 1, 0, 0.01);
+  cnv = createCanvas(200, 200);
+  cnv.mousePressed(startSound);
 }
 
 function loaded() {
@@ -21,6 +19,9 @@ function loaded() {
 
 function draw() {
   background(random(255));
-  song.pan(sliderPan.value());
-  song.rate(sliderRate.value());
+}
+
+function startSound(){
+  userStartAudio();
+  song = loadSound('rainbow.mp3', loaded);
 }
