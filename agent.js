@@ -7,9 +7,9 @@ class Agent {
     this.velocity = createVector(random(-1,1), random(-1,1));
     this.acceleration = createVector();
     this.group;
-    this.range = 30;
+    this.range = 50;
     this.id = id;
-    this.size = 7;
+    this.size = 10;
   }
 //------------------------------------------------------------------------------
   wrap(){

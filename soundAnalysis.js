@@ -6,9 +6,9 @@
 function getAmplitudes(){
   //Only use frequencies in the vocal range (100-2000 Hz)
   let min_freq = 20; //Min frequency to analyze
-  let med1_freq = 2000; //partition between low and med ranges
-  let med2_freq = 10000; // partition between med and high ranges
   let max_freq = 20000; //Max frequency to analaze
+  let med1_freq = (max_freq-min_freq)*0.10 + min_freq; //partition between low and med ranges
+  let med2_freq = (max_freq-min_freq)*0.33 + min_freq; // partition between med and high ranges
 
   //Run Fast Fourier Transform spectrum analysis
   let spectrum = fft.analyze();
