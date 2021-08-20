@@ -35,7 +35,7 @@ function draw() {
   }
 
   //Get Amplitudes / ASC multipliers
-  if(music.isPlaying()){
+  if(music != null && music.isPlaying()){
     let ascVector = getAmplitudes();
   }
   else {
