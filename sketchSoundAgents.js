@@ -33,7 +33,12 @@ function draw() {
   }
 
   //Get Amplitudes / ASC multipliers
-  let ascVector = getAmplitudes();
+  if(musicToggle){
+    let ascVector = getAmplitudes();
+  }
+  else {
+    ascVector = createVector(1,1.5,1);
+  }
   text(ascVector.y + '\n' + ascVector.x + '\n' + ascVector.z, 10, 50);
 
   //Run agents
