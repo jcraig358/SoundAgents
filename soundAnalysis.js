@@ -5,10 +5,10 @@
 //Return a vector of the average amplitudes of "low", "med" and "high" frequencies
 function getAmplitudes(){
   //Only use frequencies in the vocal range (100-2000 Hz)
-  let min_freq = 100; //Min frequency to analyze
-  let med1_freq = 385; //partition between low and med ranges
-  let med2_freq = 1000; // partition between med and high ranges
-  let max_freq = 2000; //Max frequency to analaze
+  let min_freq = 20; //Min frequency to analyze
+  let med1_freq = 2000; //partition between low and med ranges
+  let med2_freq = 10000; // partition between med and high ranges
+  let max_freq = 20000; //Max frequency to analaze
 
   //Run Fast Fourier Transform spectrum analysis
   let spectrum = fft.analyze();
