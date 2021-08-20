@@ -9,6 +9,8 @@ let cnv; //Canvas
 let music; //music file
 let musicToggle;
 
+let fft;
+
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
   cnv.mousePressed(toggleSound);
@@ -72,6 +74,7 @@ function toggleSound(){
   if(musicToggle){
     userStartAudio();
     music = loadSound('rainbow.mp3',loaded);
+    fft = new p5.FFT();
   }
   else{
     music.stop();
