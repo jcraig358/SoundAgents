@@ -49,6 +49,13 @@ function draw() {
     frate = frameRate();
   }
   text(nf(frate,2,0), 10, 30);
+
+  if(musicToggle){
+    text("PLAYING", width-150, 30);
+    if(music.isPlaying()){
+      text("YES IT IS", width-150, 70)
+    }
+  }
 }
 
 function toggleSound(){
