@@ -33,13 +33,14 @@ function draw() {
   for(a of agents){
     qtree.insert(a);
   }
-
+  
   //Get Amplitudes / ASC multipliers
+  let ascVector;
   if(music != null && music.isPlaying()){
-    let ascVector = getAmplitudes();
+    ascVector = getAmplitudes();
   }
   else {
-    ascVector = createVector(1,1.5,1);
+    ascVector = createVector(1.5,1.0,1.0);
   }
   text(ascVector.y + '\n' + ascVector.x + '\n' + ascVector.z, 10, 50);
 

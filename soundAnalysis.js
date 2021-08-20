@@ -18,6 +18,8 @@ function getAmplitudes(){
   let med = fft.getEnergy(med1_freq, med2_freq);
   let high = fft.getEnergy(med2_freq, max_freq);
 
+  console.log("LOW = " + low + "\nMED = " + med + "\nHIGH = " + high);
+
   //Return a vector containing the amplitudes
   return createVector(low,med,high);
 //End getAmplitudes
