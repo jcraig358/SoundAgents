@@ -61,3 +61,7 @@ function toggleSound(){
     music.stop();
   }
 }
+
+function loaded(){
+  music.play();
+}
