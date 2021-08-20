@@ -238,14 +238,14 @@ class Agent {
     return steer_force;
   }
 //------------------------------------------------------------------------------
-  calcAcceleration(agents){
+  calcAcceleration(agents, ascVector){
     let ali = this.alignment(agents);
     let sep = this.separation(agents);
     let coh = this.cohesion(agents);
 
-    ali.mult(1.0);
-    sep.mult(1.5);
-    coh.mult(1.0);
+    ali.mult(ascVector.y);
+    sep.mult(ascVector.x);
+    coh.mult(ascVector.z);
 
     let total_force = createVector();
     total_force.add(ali);
@@ -293,9 +293,9 @@ class Agent {
     this.highlighted = false;
   }
 //------------------------------------------------------------------------------
-  run(base_qtree){
+  run(base_qtree, ascVector){
     let agents = this.getListOfAgents(base_qtree);
-    this.calcAcceleration(agents);
+    this.calcAcceleration(agents, ascVector);
     this.update();
     this.render();
   }
