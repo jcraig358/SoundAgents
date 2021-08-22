@@ -1,5 +1,5 @@
 let qtree;
-let num_points = 100;
+let num_points = 250;
 let curr_millis = 0;
 let agents = [];
 
@@ -11,10 +11,16 @@ let musicToggle;
 
 let fft;
 
+function preload(){
+  music = loadSound('rainbow.mp3');
+  fft = new p5.FFT();
+  musicToggle = false;
+}
+
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
   cnv.mousePressed(toggleSound);
-  musicToggle = false;
+
 
   rectMode(CENTER);
 
@@ -24,7 +30,7 @@ function setup() {
 
   frameRate(60);
 }
-
+//-----------------------------------------------------------------------------
 function draw() {
   background(0);
 
@@ -33,7 +39,7 @@ function draw() {
   for(a of agents){
     qtree.insert(a);
   }
-  
+
   //Get Amplitudes / ASC multipliers
   let ascVector;
   if(music != null && music.isPlaying()){
@@ -74,8 +80,9 @@ function toggleSound(){
   musicToggle = !musicToggle;
   if(musicToggle){
     userStartAudio();
-    music = loadSound('rainbow.mp3',loaded);
-    fft = new p5.FFT();
+    //music = loadSound('rainbow.mp3',loaded);
+    //fft = new p5.FFT();
+    music.play();
   }
   else{
     music.stop();

@@ -1,13 +1,13 @@
 class Agent {
 
   constructor(id){
-    this.maxForce = 0.05;
-    this.maxSpeed = 3;
+    this.maxForce = 0.1;
+    this.maxSpeed = 5;
     this.position = createVector(random(width), random(height));
     this.velocity = createVector(random(-1,1), random(-1,1));
     this.acceleration = createVector();
     this.group;
-    this.range = 50;
+    this.range = 30;
     this.id = id;
     this.size = 10;
   }
@@ -41,7 +41,7 @@ class Agent {
       other: the boid that is being tested compared to this boid
   */
   altPosition(other){
-    let edgeConsideration = true;
+    let edgeConsideration = false;
     if(edgeConsideration){ //Toggle for turning edge consideration on/off
       //calc dist between points
       let xdist = abs(this.position.x - other.position.x);
@@ -179,7 +179,7 @@ class Agent {
   separation(agents){
     //Create zero vector
     let steer_force = createVector(0,0);
-    let neighbourFactor = 1.25;
+    let neighbourFactor = 1.5;
 
     for(let other of agents){
       if(other == this){continue;}
