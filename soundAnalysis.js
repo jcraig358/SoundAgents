@@ -7,17 +7,33 @@ function getAmplitudes(){
   //Only use frequencies in the vocal range (100-2000 Hz)
   let min_freq = 20; //Min frequency to analyze
   let max_freq = 20000; //Max frequency to analaze
+  //let midFreq1 = 1000;
+  //let midFreq2 = 6000;
   let size = max_freq - min_freq;
-  let perMed = 0.125; //partition between low and med ranges
-  let perHigh = 0.50; // partition between med and high ranges
+  let perMed = 0.25; //partition between low and med ranges
+  let perHigh = 0.667; // partition between med and high ranges
+  let midFreq1 = min_freq + (size * perMed);
+  let midFreq2 = min_freq + (size * perHigh);
+
 
   //Run Fast Fourier Transform spectrum analysis
-  let spectrum = fft.analyze(512);
+  let spectrum = fft.analyze();
 
-  //getEnergy gives amplitude of the frequency rangep; value is 0-255
-  let low = average(spectrum, 0, spectrum.length*perMed);
-  let med = average(spectrum, spectrum.length*perMed, spectrum.length*perHigh);
-  let high = average(spectrum, spectrum.length*perHigh, spectrum.length);
+  //getEnergy gives amplitude of the frequency range; value is 0-255
+  let low = fft.getEnergy(min_freq, midFreq1)*(midFreq1 - min_freq);
+  let med = fft.getEnergy(midFreq1, midFreq2)*(midFreq2 - midFreq1);
+  let high = fft.getEnergy(midFreq2, max_freq)*(max_freq - midFreq2);
+
+  let total = (low + med + high) / 10;
+
+  low = max(low / total, 0);
+  med = max(med / total, 0);
+  high = max(high / total, 0);
+
+  //Sum the amplitude in each frequency for that spectrum
+  // let low = average(spectrum, 0, spectrum.length*perMed);
+  // let med = average(spectrum, spectrum.length*perMed, spectrum.length*perHigh);
+  // let high = average(spectrum, spectrum.length*perHigh, spectrum.length);
 
   //console.log("LOW = " + low + "\nMED = " + med + "\nHIGH = " + high);
 

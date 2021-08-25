@@ -1,7 +1,7 @@
 class Agent {
 
   constructor(id){
-    this.maxForce = 0.1;
+    this.maxForce = 0.25;
     this.maxSpeed = 5;
     this.position = createVector(random(width), random(height));
     this.velocity = createVector(random(-1,1), random(-1,1));
@@ -41,7 +41,7 @@ class Agent {
       other: the boid that is being tested compared to this boid
   */
   altPosition(other){
-    let edgeConsideration = false;
+    let edgeConsideration = true;
     if(edgeConsideration){ //Toggle for turning edge consideration on/off
       //calc dist between points
       let xdist = abs(this.position.x - other.position.x);
@@ -179,7 +179,8 @@ class Agent {
   separation(agents){
     //Create zero vector
     let steer_force = createVector(0,0);
-    let neighbourFactor = 1.5;
+    let neighbourFactor = 1.0;
+    let div_compensator = 1.5;
 
     for(let other of agents){
       if(other == this){continue;}
@@ -194,7 +195,8 @@ class Agent {
       //Determine signifcance factor
       //let factor = lerp(0.0001, 1.0,distance/(this.range/neighbourFactor));
       //desired.div(factor);
-      desired.div(max(distance*distance, 0.0001));
+      desired.div(max(distance*distance, 0.000001));
+      desired.mult(div_compensator);
 
       //Sum desired vectors together
       steer_force.add(desired);
@@ -221,6 +223,7 @@ class Agent {
       let distance = p5.Vector.dist(otherPos, this.position);
 
       //Determine signifcance factor
+      let hit = false;
       let factor = lerp(0.0,1.0, min(distance, this.range)/this.range);
       desired.mult(factor);
 

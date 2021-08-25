@@ -12,7 +12,7 @@ let musicToggle;
 let fft;
 
 function preload(){
-  music = loadSound('rainbow.mp3');
+  music = loadSound('levels.mp3');
   fft = new p5.FFT();
   musicToggle = false;
 }
