@@ -1,15 +1,17 @@
 class Agent {
 
   constructor(id){
-    this.maxForce = 0.25;
-    this.maxSpeed = 5;
+    this.maxForceBase = 0.1;
+    this.maxForce = this.maxForceBase;
+    this.maxSpeedBase = 3;
+    this.maxSpeed = this.maxSpeedBase;
     this.position = createVector(random(width), random(height));
     this.velocity = createVector(random(-1,1), random(-1,1));
     this.acceleration = createVector();
     this.group;
     this.range = 30;
     this.id = id;
-    this.size = 10;
+    this.size = 5;
   }
 //------------------------------------------------------------------------------
   wrap(){
@@ -179,7 +181,8 @@ class Agent {
   separation(agents){
     //Create zero vector
     let steer_force = createVector(0,0);
-    let neighbourFactor = 1.0;
+    let neighbourFactor = 2.0;
+    let neighbourCutoff = 1.25;
     let div_compensator = 1.5;
 
     for(let other of agents){
@@ -187,16 +190,29 @@ class Agent {
 
       let otherPos = this.altPosition(other);
 
-      if(p5.Vector.dist(this.position, otherPos) > this.range/neighbourFactor){continue;}
+      //Exclude agents beyond range
+      if(p5.Vector.dist(this.position, otherPos) > this.range/neighbourCutoff){continue;}
 
       let desired = p5.Vector.sub(this.position, otherPos);
       let distance = p5.Vector.dist(otherPos, this.position);
 
+      //Determine magnitude of near neighbour contribution (0-1 mapped by distance)
+      let magFactor = 1.0;
+      if(distance <= this.range/neighbourFactor){
+        magFactor = map(distance, 0, this.range/neighbourFactor, 0.01, 1.0);
+      }
+      //Determine magnitude of far neighbour contribution (1-100 mapped by distance)
+      else{
+        magFactor = map(distance, this.range/neighbourFactor, this.range/neighbourCutoff, 1.0, 10.0);
+      }
+      desired.div(magFactor*magFactor);
+
+
       //Determine signifcance factor
-      //let factor = lerp(0.0001, 1.0,distance/(this.range/neighbourFactor));
-      //desired.div(factor);
-      desired.div(max(distance*distance, 0.000001));
-      desired.mult(div_compensator);
+
+
+      // desired.div(max(distance*distance, 0.000001));
+      // desired.mult(div_compensator);
 
       //Sum desired vectors together
       steer_force.add(desired);
@@ -215,7 +231,7 @@ class Agent {
     let steer_force = createVector(0,0);
 
     for(let other of agents){
-      if(other == this){continue;}
+      if(other == this || dist(other.position.x, other.position.y, this.position.x, this.position.y) > this.cohRange){continue;}
 
       let otherPos = this.altPosition(other);
 
@@ -242,15 +258,15 @@ class Agent {
   }
 //------------------------------------------------------------------------------
   calcAcceleration(agents, ascVector){
-    let ali = this.alignment(agents);
-    let sep = this.separation(agents);
-    let coh = this.cohesion(agents);
+    var ali = this.alignment(agents);
+    var sep = this.separation(agents);
+    var coh = this.cohesion(agents);
 
     ali.mult(ascVector.y);
     sep.mult(ascVector.x);
     coh.mult(ascVector.z);
 
-    let total_force = createVector();
+    var total_force = createVector();
     total_force.add(ali);
     total_force.add(sep);
     total_force.add(coh);
@@ -296,8 +312,11 @@ class Agent {
     this.highlighted = false;
   }
 //------------------------------------------------------------------------------
-  run(base_qtree, ascVector){
+  run(base_qtree, ascVector, velMult, cohRange){
+    this.cohRange = cohRange;
     let agents = this.getListOfAgents(base_qtree);
+    this.maxSpeed = this.maxSpeedBase * velMult;
+    this.maxForce = this.maxForceBase * velMult;
     this.calcAcceleration(agents, ascVector);
     this.update();
     this.render();
