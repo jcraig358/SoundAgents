@@ -19,7 +19,7 @@ let musicToggle;
 let fft;
 let osc;
 
-var sld
+var sldLowMed, sldMedHigh;
 //-----------------------------------------------------------------------------
 function preload(){
   music = loadSound('levels.mp3');
@@ -82,8 +82,8 @@ function draw() {
   text("Med-Ali: "+ nf(ascVector.y,2,3) + "\nLow-Sep: " + nf(ascVector.x,2,3) + "\nHigh-Coh: " + nf(ascVector.z,2,3), 10, 50);
 
   //Run agents------------------
-  var velMult = 60 / frameRate();
-  if(velMult == null || velMult == 0){ velMult = 1; }
+  var velMult = 1;
+  if(frameRate()){velMult = 60 / frameRate()};
   rectMode(CENTER);
   for(a of agents){
     a.run(qtree, ascVector, velMult, cohRange);
