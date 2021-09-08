@@ -3,11 +3,15 @@
 */
 class QTree {
 
-  constructor(boundary, n){
+  constructor(boundary, n, level = 0){
     this.boundary = boundary;
     this.capacity = n;
     this.elements = [];
     this.isParent = false;
+    this.level = level;
+    if(this.level > qtreeDepth){
+      qtreeDepth = this.level;
+    }
   }
 //------------------------------------------------------------------------------
 /* Subdivide this quad-tree into 4 child quadtrees and pass points to them.
@@ -18,22 +22,26 @@ class QTree {
                                this.boundary.x + (this.boundary.w/4),  //origin x
                                this.boundary.y - (this.boundary.h/4),  //origin y
                                this.boundary.w/2, this.boundary.h/2),   //width, height
-                               this.capacity);       //capacity
+                               this.capacity,       //capacity
+                               this.level+1);       //Depth
     this.northwest = new QTree(new Boundary(
                                this.boundary.x - (this.boundary.w/4),
                                this.boundary.y - (this.boundary.h/4),
                                this.boundary.w/2, this.boundary.h/2),
-                               this.capacity);
+                               this.capacity,       //capacity
+                               this.level+1);       //Depth
     this.southeast = new QTree(new Boundary(
                                this.boundary.x + (this.boundary.w/4),
                                this.boundary.y + (this.boundary.h/4),
                                this.boundary.w/2, this.boundary.h/2),
-                               this.capacity);
+                               this.capacity,       //capacity
+                               this.level+1);       //Depth
     this.southwest = new QTree(new Boundary(
                                this.boundary.x - (this.boundary.w/4),
                                this.boundary.y + (this.boundary.h/4),
                                this.boundary.w/2, this.boundary.h/2),
-                               this.capacity);
+                               this.capacity,       //capacity
+                               this.level+1);       //Depth
     this.isParent = true;
 
     //Pass elements to children and clear parent elements
