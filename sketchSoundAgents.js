@@ -18,15 +18,17 @@ let agents = [];
 let frate = 0;
 
 let cnv; //Canvas
+let fileHover = false;
 let music1, music2, music3, activeMusic; //music file
 let musicToggle;
 
 let fft;
 let amp;
-let osc;
+let mic;
 
 //-----------------------------------------------------------------------------
 function preload(){
+  soundFormats('mp3','wav');
   music1 = loadSound('Singularity.mp3');
   music1.onended(() => musicEnded(this));
   music2 = loadSound('Solarium.mp3');
@@ -41,17 +43,21 @@ function preload(){
 function setup() {
   fft = new p5.FFT(0.5, 1024);
   amp = new p5.Amplitude(0.8);
+  mic = new p5.AudioIn();
+  //mic.getSources(selectSource);
 
   frameRate(60);
 
   generateCanvas();
   divCanvas = select('#divCanvas');
   cnv.parent(divCanvas);
+  cnv.drop(fileDrop);
+  cnv.dragOver(fileOver);
+  cnv.dragLeave(fileLeft);
 }
 //-----------------------------------------------------------------------------
 function draw() {
   background(0);
-
   //Buid QTree
   qtreeDepth = 0;
   qtree = new QTree(new Boundary(width/2, height/2, width, height), agentsPerQTree);
@@ -69,7 +75,7 @@ function draw() {
 
   //Get Amplitudes / ASC multipliers
   let ascVector;
-  if(activeMusic != null && activeMusic.isPlaying()){
+  if((activeMusic != null && activeMusic.isPlaying()) || cbxMic.checked()){
     ascVector = getAmplitudes();
   }
   else {
@@ -83,7 +89,7 @@ function draw() {
   if(frameRate()){velMult = 60 / frameRate()};
   rectMode(CENTER);
   let maxSpeed = maxSpeedBase * velMult * pow(sizeMult,0.75);
-  let maxForce = maxForceBase * pow(velMult, 1.5);
+  let maxForce = maxForceBase * pow(velMult, 1.5) * sizeMult;
   let range = rangeBase * sizeMult;
   let size = sizeBase * sizeMult;
   text("VelMult: " + nf(velMult, 1, 3) + "; MaxForce: "+ nf(maxForce,1,3) + "; SizeMult: "+nf(sizeMult,1,2), 30, 100);
@@ -107,6 +113,12 @@ function draw() {
     if(activeMusic.isPlaying()){
       text("YES IT IS", width-150, 70)
     }
+    text("Mic")
+  }
+
+  //Draw file-hover overlay
+  if(fileHover){
+    background(0,200,0,75);
   }
 }
 //------------------------------------------------------------------------------
@@ -124,13 +136,13 @@ function toggleSound(){
 }
 //------------------------------------------------------------------------------
 function toggleMusic(music){
-  if(activeMusic == null || !activeMusic.isPlaying()){
+  if(activeMusic == null || (!activeMusic.isPlaying() && !activeMusic.isPaused())) {
     userStartAudio();
     activeMusic = music;
     activeMusic.play();
     musicToggle = true;
   }
-  else if(activeMusic.isPlaying()){
+  else if(activeMusic.isPlaying() || activeMusic.isPaused()){
     activeMusic.stop();
     musicToggle = false;
     activeMusic = music;
@@ -139,8 +151,8 @@ function toggleMusic(music){
   }
 }
 //------------------------------------------------------------------------------
-function loaded(){
-  music.play();
+function soundLoaded(){
+  activeMusic.play();
 }
 //------------------------------------------------------------------------------
 function musicEnded(btn){
@@ -177,4 +189,21 @@ function generateCanvas(){
 //------------------------------------------------------------------------------
 function windowResized(){
   generateCanvas();
+}
+//------------------------------------------------------------------------------
+function fileOver(){
+  fileHover = true;
+}
+function fileLeft(){
+  fileHover = false;
+}
+function fileDrop(file){
+  if(file.name.endsWith('.mp3') || file.name.endsWith('.wav')){
+    if(activeMusic != null && (activeMusic.isPlaying() || activeMusic.isPaused())) {
+      activeMusic.stop();
+    }
+    userStartAudio();
+    activeMusic = loadSound(file, soundLoaded);
+  }
+  fileHover = false;
 }

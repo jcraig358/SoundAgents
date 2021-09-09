@@ -1,6 +1,6 @@
 var sldLowMed, sldMedHigh, sldAgentDensity, sldAgentSize;
 var lblNumAgents, lblAgentSize;
-var cbxSubAmp, cbxShowQTree, cbxShowSpectrum;
+var cbxSubAmp, cbxShowQTree, cbxShowSpectrum, cbxMic;
 var btnMusic1, btnMusic2, btnMusic3, btnPause;
 var divUI, divFreqSld, divOptionCbx, divMusicBtn;
 
@@ -28,6 +28,10 @@ function createUI(){
   cbxShowSpectrum = createCheckbox('Spectrum', true);
   cbxShowSpectrum.style('color', 'white');
   cbxShowSpectrum.parent(divOptionCbx3);
+  cbxMic = createCheckbox('Mic', false);
+  cbxMic.parent(divUI);
+  cbxMic.changed(toggleMic);
+  cbxMic.style('color', 'white');
 
   btnMusic1 = createButton('Music1');
   btnMusic1.mousePressed(() => toggleMusic(music1));
@@ -40,7 +44,7 @@ function createUI(){
   btnMusic3.parent(divMusicBtn);
   btnPause = createButton('Pause');
   btnPause.mousePressed(() => {if(activeMusic.isPlaying()){activeMusic.pause();}
-                               else{activeMusic.play();}});
+                               else if(activeMusic.isPaused()){activeMusic.play();}});
   btnPause.parent(divMusicBtn);
 
   sldAgentDensity = createSlider(0.00001, 0.00100, 0.0002, 0);
@@ -50,6 +54,7 @@ function createUI(){
   lblNumAgents = createP("Agents: " + num_agents);
   lblNumAgents.parent(select('#divAgentLbl'));
   lblNumAgents.style('margin', '0px');
+  lblNumAgents.style('color', 'white');
 
   sldAgentSize = createSlider(0.25, 5.0, 1.0, 0);
   sldAgentSize.parent(select('#divSizeSld'));
@@ -87,7 +92,25 @@ function SldAgentSizeInput(){
 }
 //------------------------------------------------------------------------------
 function ResizeSliders(){
-  sldWidth = width*0.10;
+  sldWidth = width*0.20;
   sldAgentDensity.size(sldWidth, 20);
   sldAgentSize.size(sldWidth, 20);
+  sldLowMed.size(sldWidth,20);
+  sldMedHigh.size(sldWidth,20);
+}
+//------------------------------------------------------------------------------
+function toggleMic(){
+  if(cbxMic.checked() == true){
+    mic.start();
+    console.log("mic on " + mic.currentSource);
+  }
+  else{
+    console.log("mic off");
+    mic.stop();
+  }
+}
+//------------------------------------------------------------------------------
+function selectSource(deviceList){
+  mic.selectSource(deviceList[0]);
+  console.log(deviceList[0].deviceId);
 }

@@ -9,7 +9,7 @@ body {
 
 #divCanvas{
   position: relative;
-  z-index: -1;
+  z-index: 0;
 }
 
 #divUI{
@@ -28,7 +28,7 @@ body {
 
 #divOptions {
   display: grid;
-  grid-template-columns: fit-content(20%) fit-content(20%) auto auto fit-content(30%) auto fit-content(30%) auto;
+  grid-template-columns: fit-content(20%) fit-content(20%) auto auto fit-content(30%) fit-content(30%);
   grid-column-gap: 1%
 }
 
@@ -36,8 +36,10 @@ body {
 }
 
 #divMusicBtn {
+  display: relative;
 }
 
-#divAgentLbl {
-  color: white;
+.slider{
+  margin-top: -1%;
+  display: relative;
 }
