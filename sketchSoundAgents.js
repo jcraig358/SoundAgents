@@ -27,11 +27,11 @@ let osc;
 
 //-----------------------------------------------------------------------------
 function preload(){
-  music1 = loadSound('Singularity.wav');
+  music1 = loadSound('Singularity.mp3');
   music1.onended(() => musicEnded(this));
-  music2 = loadSound('Solarium.wav');
+  music2 = loadSound('Solarium.mp3');
   music2.onended(() => musicEnded(this));
-  music3 = loadSound('btvr-waiting.wav');
+  music3 = loadSound('Flocking.mp3');
   music3.onended(() => musicEnded(this));
   musicToggle = false;
 
