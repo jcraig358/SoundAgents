@@ -29,16 +29,16 @@ function createUI(){
   cbxShowSpectrum.style('color', 'white');
   cbxShowSpectrum.parent(divOptionCbx3);
 
-  btnMusic1 = createButton('Play Music 1');
+  btnMusic1 = createButton('Music1');
   btnMusic1.mousePressed(() => toggleMusic(music1));
   btnMusic1.parent(divMusicBtn);
-  btnMusic2 = createButton('Play Music 2');
+  btnMusic2 = createButton('Music2');
   btnMusic2.mousePressed(() => toggleMusic(music2));
   btnMusic2.parent(divMusicBtn);
-  btnMusic3 = createButton('Play Music 3');
+  btnMusic3 = createButton('Music3');
   btnMusic3.mousePressed(() => toggleMusic(music3));
   btnMusic3.parent(divMusicBtn);
-  btnPause = createButton('Pause Music');
+  btnPause = createButton('Pause');
   btnPause.mousePressed(() => {if(activeMusic.isPlaying()){activeMusic.pause();}
                                else{activeMusic.play();}});
   btnPause.parent(divMusicBtn);
@@ -84,4 +84,10 @@ function SldAgentDensityInput(){
 function SldAgentSizeInput(){
   sizeMult = sldAgentSize.value();
   lblAgentSize.html("Size: " + nf(sizeMult,1,2));
+}
+//------------------------------------------------------------------------------
+function ResizeSliders(){
+  sldWidth = width*0.10;
+  sldAgentDensity.size(sldWidth, 20);
+  sldAgentSize.size(sldWidth, 20);
 }

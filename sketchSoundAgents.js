@@ -155,6 +155,8 @@ function generateCanvas(){
   }
   //cnv.mousePressed(toggleSound);
 
+  ResizeSliders();
+
   num_agents = round(sldAgentDensity.value()*width*height);
   lblNumAgents.html("Agents: " + num_agents);
 
