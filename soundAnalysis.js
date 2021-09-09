@@ -10,14 +10,17 @@ function getAmplitudes(){
   //let midFreq1 = 1000;
   //let midFreq2 = 6000;
   let size = max_freq - min_freq;
-  let perMed = 0.20; //partition between low and med ranges
-  let perHigh = 0.50; // partition between med and high ranges
+  let perMed = sldLowMed.value(); //partition between low and med ranges
+  let perHigh = sldMedHigh.value(); // partition between med and high ranges
   let midFreq1 = min_freq + (size * perMed);
   let midFreq2 = min_freq + (size * perHigh);
 
 
   //Run Fast Fourier Transform spectrum analysis
   var spectrum = fft.analyze();
+  let level;
+  if(cbxSubAmp.checked()){ level = amp.getLevel() * (10-exp(1))/10; }
+  else { level = 0; };
 
   //getEnergy gives amplitude of the frequency range; value is 0-255
   // let low = fft.getEnergy(min_freq, midFreq1)*(midFreq1 - min_freq);
@@ -31,21 +34,25 @@ function getAmplitudes(){
   // high = max(high / total, 0);
 
   //Sum the amplitude in each frequency for that spectrum
-  let low = max(sum(spectrum, 0, parseInt(spectrum.length*perMed)),1.5);
-  let med = max(sum(spectrum, parseInt(spectrum.length*perMed), parseInt(spectrum.length*perHigh)),1.0);
-  let high = max(sum(spectrum, parseInt(spectrum.length*perHigh), parseInt(spectrum.length)),1.0);
+  let low = max(sum(spectrum, level, 0, parseInt(spectrum.length*perMed)),1.5);
+  let med = max(sum(spectrum, level, parseInt(spectrum.length*perMed), parseInt(spectrum.length*perHigh)),1.0);
+  let high = max(sum(spectrum, level, parseInt(spectrum.length*perHigh), parseInt(spectrum.length)),1.0);
 
   //console.log("LOW = " + low + "\nMED = " + med + "\nHIGH = " + high);
 
   //Draw spectrum
-  rectMode(CORNER);
-  text("Spec-length: " + spectrum.length, 30, 150);
-  for(let i=0; i<spectrum.length; i++){
-    if(i < spectrum.length*perMed){ fill(255,0,0); }
-    else if(i < spectrum.length*perHigh){ fill(0,255,0); }
-    else {fill(0,0,255);}
-    stroke(0,0,0,0);
-    rect(i*(width/spectrum.length), height - map(spectrum[i], 0, 255, 0, height), width/spectrum.length, map(spectrum[i], 0, 255, 0, height));
+  if(cbxShowSpectrum.checked()){
+    rectMode(CORNER);
+    text("Spec-length: " + spectrum.length + "; Amplitude: "+ nf(level,1,2) + "; lowmed: "+perMed+"; medHi: "+perHigh, 30, 150);
+    for(let i=0; i<spectrum.length; i++){
+      if(i < spectrum.length*perMed){ fill(255,0,0); }
+      else if(i < spectrum.length*perHigh){ fill(0,255,0); }
+      else {fill(0,0,255);}
+      stroke(0,0,0,0);
+      rect(i*(width/spectrum.length), height - map(spectrum[i], 0, 255, 0, height), width/spectrum.length, map(spectrum[i], 0, 255, 0, height));
+    }
+    fill(0,0,0,150);
+    rect(0,height - level*height, width, level*height);
   }
 
   //Return a vector containing the amplitudes
@@ -53,7 +60,7 @@ function getAmplitudes(){
 //End getAmplitudes
 }
 
-function sum(array, min_index, max_index){
+function sum(array, level, min_index, max_index){
   let start = parseInt(min_index);
   let end = parseInt(max_index);
   //console.log("avg: " + min_index + " - " + max_index);
@@ -62,7 +69,8 @@ function sum(array, min_index, max_index){
   let i = start;
 
   for(let i=min_index; i<max_index; i++){
-    sum += array[i] / 255;
+    //Only add bins that have amplitude > average amplitude; put more weight on larger values.
+    sum += max((array[i] / 255)-level,0);
   }
   //sum = sum / (max_index-min_index);
 

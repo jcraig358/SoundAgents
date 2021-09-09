@@ -9,8 +9,10 @@ class Agent {
     this.velocity = createVector(random(-1,1), random(-1,1));
     this.acceleration = createVector();
     this.group;
+    this.rangeBase = 30;
     this.range = 30;
     this.id = id;
+    this.sizeBase = 5;
     this.size = 5;
   }
 //------------------------------------------------------------------------------
@@ -231,7 +233,7 @@ class Agent {
     let steer_force = createVector(0,0);
 
     for(let other of agents){
-      if(other == this || dist(other.position.x, other.position.y, this.position.x, this.position.y) > this.cohRange){continue;}
+      if(other == this){continue;}
 
       let otherPos = this.altPosition(other);
 
@@ -240,8 +242,8 @@ class Agent {
 
       //Determine signifcance factor
       let hit = false;
-      let factor = lerp(0.0,1.0, min(distance, this.range)/this.range);
-      desired.mult(factor);
+      let factor = map(distance, 0.0, this.range, 0.0, 2.0);
+      desired.mult(factor*factor);
 
       //Sum desired vectors together
       steer_force.add(desired);
@@ -312,11 +314,12 @@ class Agent {
     this.highlighted = false;
   }
 //------------------------------------------------------------------------------
-  run(base_qtree, ascVector, velMult, cohRange){
-    this.cohRange = cohRange;
+  run(base_qtree, ascVector, speed, force, range, size){
+    this.range = range;
+    this.size = size;
+    this.maxSpeed = speed;
+    this.maxForce = force;
     let agents = this.getListOfAgents(base_qtree);
-    this.maxSpeed = this.maxSpeedBase * velMult;
-    this.maxForce = this.maxForceBase * velMult;
     this.calcAcceleration(agents, ascVector);
     this.update();
     this.render();
