@@ -32,6 +32,7 @@ function createUI(){
   cbxMic.parent(divUI);
   cbxMic.changed(toggleMic);
   cbxMic.style('color', 'white');
+  cbxMic.hide(); //Mic is currently not working
 
   btnMusic1 = createButton('Music1');
   btnMusic1.mousePressed(() => toggleMusic(music1));
@@ -84,6 +85,7 @@ function SldAgentDensityInput(){
     }
     lblNumAgents.html("Agents: " + num_agents);
   }
+  MinQTreeDepth();
 }
 //------------------------------------------------------------------------------
 function SldAgentSizeInput(){

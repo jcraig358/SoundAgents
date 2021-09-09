@@ -177,6 +177,14 @@ function generateCanvas(){
     agents.push(new Agent(i));
   }
 
+  MinQTreeDepth();
+}
+//------------------------------------------------------------------------------
+function windowResized(){
+  generateCanvas();
+}
+//------------------------------------------------------------------------------
+function MinQTreeDepth(){
   //Determine ideal QTree depth in uniform agent density.
   //1) Determine number of quads; 2) Find lowest pow4 greater than quads; 3) depth=log4(lowPow4)
   let min_quads = num_agents / agentsPerQTree;
@@ -185,10 +193,6 @@ function generateCanvas(){
     minQTreeDepth++;
   }
   minQTreeDepth += 0;
-}
-//------------------------------------------------------------------------------
-function windowResized(){
-  generateCanvas();
 }
 //------------------------------------------------------------------------------
 function fileOver(){
