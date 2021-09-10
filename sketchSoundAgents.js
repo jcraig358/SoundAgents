@@ -32,17 +32,11 @@ let mic;
 //-----------------------------------------------------------------------------
 function preload(){
   soundFormats('mp3','wav');
-  music = LoadingUI(initialFiles);
-  // music.push(loadSound('Singularity.mp3', loadSuccessCallback, loadFailCallback, loadingProgessCallback));
-  // music[0].onended(() => musicEnded(this));
-  // music.push(loadSound('Solarium.mp3', loadSuccessCallback, loadFailCallback, loadingProgessCallback));
-  // music[1].onended(() => musicEnded(this));
-  // music.push(loadSound('Flocking.mp3', loadSuccessCallback, loadFailCallback, loadingProgessCallback));
-  // music[2].onended(() => musicEnded(this));
   musicToggle = false;
 }
 //-----------------------------------------------------------------------------
 function setup() {
+  music = LoadingUI(initialFiles);
   createUI(); //ui.js
   fft = new p5.FFT(0.8, 1024);
   amp = new p5.Amplitude(0.8);

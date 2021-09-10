@@ -58,8 +58,6 @@ function LoadingUI(items, play=false){
 function loadingProgessCallback(progress){
   let size = (100/itemsToLoad.length)*(itemsLoaded.length-1 + progress) + 1;
   progLoading.style('width', size + '%');
-
-  if(playOnLoad){ console.log(itemsLoaded.length-1+progress);}
 }
 
 function loadSuccessCallback(){
