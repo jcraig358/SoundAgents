@@ -10,16 +10,18 @@ function getAmplitudes(){
   //let midFreq1 = 1000;
   //let midFreq2 = 6000;
   let size = max_freq - min_freq;
-  let perMed = sldLowMed.value(); //partition between low and med ranges
-  let perHigh = sldMedHigh.value(); // partition between med and high ranges
+  let values = $("#divFreqSld").slider("values");
+  let perMed = values[0]/100; //partition between low and med ranges
+  let perHigh = values[1]/100; // partition between med and high ranges
   let midFreq1 = min_freq + (size * perMed);
   let midFreq2 = min_freq + (size * perHigh);
 
 
   //Run Fast Fourier Transform spectrum analysis
   var spectrum = fft.analyze();
-  let level;
-  if(cbxSubAmp.checked()){ level = amp.getLevel() * (10-exp(1))/10; }
+  var amplitude = amp.getLevel();
+  var level;
+  if(cbxSubAmp.checked()){ level = amplitude * (10-exp(1))/10; }
   else { level = 0; };
 
   //getEnergy gives amplitude of the frequency range; value is 0-255
@@ -56,6 +58,7 @@ function getAmplitudes(){
   }
 
   //Return a vector containing the amplitudes
+  //return createVector(low,med,high);
   return createVector(low,med,high);
 //End getAmplitudes
 }

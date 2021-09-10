@@ -11,6 +11,7 @@ var maxForceBase = 0.1;
 var rangeBase = 30.0;
 var sizeBase = 5.0;
 var sizeMult = 1.0;
+let edgeConsideration = true;
 
 let curr_millis = 0;
 let agents = [];
@@ -19,7 +20,9 @@ let frate = 0;
 
 let cnv; //Canvas
 let fileHover = false;
-let music1, music2, music3, activeMusic; //music file
+let initialFiles = ['Singularity.mp3','Solarium.mp3','Flocking.mp3']
+let music = [];    //music files
+let activeMusic;
 let musicToggle;
 
 let fft;
@@ -29,19 +32,19 @@ let mic;
 //-----------------------------------------------------------------------------
 function preload(){
   soundFormats('mp3','wav');
-  music1 = loadSound('Singularity.mp3');
-  music1.onended(() => musicEnded(this));
-  music2 = loadSound('Solarium.mp3');
-  music2.onended(() => musicEnded(this));
-  music3 = loadSound('Flocking.mp3');
-  music3.onended(() => musicEnded(this));
+  music = LoadingUI(initialFiles);
+  // music.push(loadSound('Singularity.mp3', loadSuccessCallback, loadFailCallback, loadingProgessCallback));
+  // music[0].onended(() => musicEnded(this));
+  // music.push(loadSound('Solarium.mp3', loadSuccessCallback, loadFailCallback, loadingProgessCallback));
+  // music[1].onended(() => musicEnded(this));
+  // music.push(loadSound('Flocking.mp3', loadSuccessCallback, loadFailCallback, loadingProgessCallback));
+  // music[2].onended(() => musicEnded(this));
   musicToggle = false;
-
-  createUI(); //ui.js
 }
 //-----------------------------------------------------------------------------
 function setup() {
-  fft = new p5.FFT(0.5, 1024);
+  createUI(); //ui.js
+  fft = new p5.FFT(0.8, 1024);
   amp = new p5.Amplitude(0.8);
   mic = new p5.AudioIn();
   //mic.getSources(selectSource);
@@ -113,13 +116,14 @@ function draw() {
     if(activeMusic.isPlaying()){
       text("YES IT IS", width-150, 70)
     }
-    text("Mic")
   }
 
   //Draw file-hover overlay
   if(fileHover){
     background(0,200,0,75);
   }
+
+  updateUIShadow(max(amp.getLevel(), 0));
 }
 //------------------------------------------------------------------------------
 function toggleSound(){
@@ -160,7 +164,7 @@ function musicEnded(btn){
 //------------------------------------------------------------------------------
 function generateCanvas(){
   if(cnv == null){
-    cnv = createCanvas(windowWidth, windowHeight - uiHeight - windowHeight*0.01);
+    cnv = createCanvas(windowWidth, windowHeight - uiHeight);
   }
   else {
     resizeCanvas(windowWidth, windowHeight - uiHeight - windowHeight*0.01);
@@ -207,7 +211,7 @@ function fileDrop(file){
       activeMusic.stop();
     }
     userStartAudio();
-    activeMusic = loadSound(file, soundLoaded);
+    activeMusic = LoadingUI(file, true)[0];
   }
   fileHover = false;
 }

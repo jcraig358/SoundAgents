@@ -45,7 +45,6 @@ class Agent {
       other: the boid that is being tested compared to this boid
   */
   altPosition(other){
-    let edgeConsideration = true;
     if(edgeConsideration){ //Toggle for turning edge consideration on/off
       //calc dist between points
       let xdist = abs(this.position.x - other.position.x);
@@ -104,61 +103,62 @@ class Agent {
     //return agents;
 
     //Check reflections
-    let n_refl = false;
-    let s_refl = false;
-    let w_refl = false;
-    let e_refl = false;
-    let alt_x = this.position.x;
-    let alt_y = this.position.y;
+    if(edgeConsideration){
+      let n_refl = false;
+      let s_refl = false;
+      let w_refl = false;
+      let e_refl = false;
+      let alt_x = this.position.x;
+      let alt_y = this.position.y;
 
-    //East reflection
-    if(this.position.x < this.range){
-      e_refl = true;
-      alt_x = this.position.x + width;
-    }
-    //West reflection
-    else if(width - this.position.x < this.range){
-      w_refl = true;
-      alt_x = this.position.x - width;
-    }
-    //Get E-W reflection agents
-    if(e_refl || w_refl){
-      agents = base_qtree.findElementsInRange(alt_x,
-                                              this.position.y,
-                                              this.range,
-                                              agents,
-                                              this.id == 0);
-    }
+      //East reflection
+      if(this.position.x < this.range){
+        e_refl = true;
+        alt_x = this.position.x + width;
+      }
+      //West reflection
+      else if(width - this.position.x < this.range){
+        w_refl = true;
+        alt_x = this.position.x - width;
+      }
+      //Get E-W reflection agents
+      if(e_refl || w_refl){
+        agents = base_qtree.findElementsInRange(alt_x,
+                                                this.position.y,
+                                                this.range,
+                                                agents,
+                                                this.id == 0);
+      }
 
-    //South reflection
-    if(this.position.y < this.range){
-      s_refl = true;
-      alt_y = this.position.y + height;
-    }
-    //North reflection
-    else if(height - this.position.y < this.range){
-      n_refl = true;
-      alt_y = this.position.y - height;
-    }
-    //Get N-S reflection agents
-    if(s_refl || n_refl){
-      agents = base_qtree.findElementsInRange(this.position.x,
-                                              alt_y,
-                                              this.range,
-                                              agents,
-                                              this.id == 0);
-    }
+      //South reflection
+      if(this.position.y < this.range){
+        s_refl = true;
+        alt_y = this.position.y + height;
+      }
+      //North reflection
+      else if(height - this.position.y < this.range){
+        n_refl = true;
+        alt_y = this.position.y - height;
+      }
+      //Get N-S reflection agents
+      if(s_refl || n_refl){
+        agents = base_qtree.findElementsInRange(this.position.x,
+                                                alt_y,
+                                                this.range,
+                                                agents,
+                                                this.id == 0);
+      }
 
-    //Corner reflections agents
-    if((n_refl && w_refl) || (n_refl && e_refl) ||
-       (s_refl && w_refl) || (s_refl && e_refl)){
-         agents = base_qtree.findElementsInRange(alt_x,
-                                                 alt_y,
-                                                 this.range,
-                                                 agents,
-                                                 this.id == 0);
+      //Corner reflections agents
+      if((n_refl && w_refl) || (n_refl && e_refl) ||
+         (s_refl && w_refl) || (s_refl && e_refl)){
+           agents = base_qtree.findElementsInRange(alt_x,
+                                                   alt_y,
+                                                   this.range,
+                                                   agents,
+                                                   this.id == 0);
+      }
     }
-
     return agents;
   }
 //------------------------------------------------------------------------------

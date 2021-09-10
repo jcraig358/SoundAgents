@@ -4,14 +4,135 @@
   <meta charset="utf-8">
   <title>Sound Agents 0.22</title>
   <link href="styles.css" type="text/css" rel="stylesheet"/>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.min.js"></script>
   <script language="javascript" type="text/javascript" src="lib/p5.sound.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="agent.js"></script>
   <script src="boundary.js"></script>
   <script src="quadTree.js"></script>
   <script src="soundAnalysis.js"></script>
   <script src="ui.js"></script>
+  <script src="loadingUI.js"></script>
   <script src="sketchSoundAgents.js"></script>
+  <script>
+    $( function() {
+      var handle1 = $( "#handle1" );
+      var handle2 = $( "#handle2" );
+      var text1 = $( "#text1" );
+      var text2 = $( "#text2" );
+      var handle1z, handle2z;
+      var textVOffset = 30;
+      $( "#divFreqSld" ).slider({
+        range: true,
+        min: 0,
+        max: 100,
+        step: 0.1,
+        values: [ 20, 50 ],
+        create: function() {
+          handle1z = handle1.css("z-index");
+          handle2z = handle2.css("z-index");
+          text1.text(20+ Math.round($( this ).slider("values", 0)/100*(20000-20)) +"Hz" );
+          text1.css({top: $("#handle1").position().top - textVOffset,
+                     left: $("#handle1").position().left - $("#text1").outerWidth()/2,
+                     position: 'absolute'});
+          text1.hide();
+          text2.text(20+ Math.round($( this ).slider("values", 1)/100*(20000-20)) +"Hz" );
+          text2.css({top: $("#handle2").position().top - textVOffset,
+                     left: $("#handle2").position().left - $("#text2").outerWidth()/2,
+                     position: 'absolute'});
+          text2.hide();
+
+          //Adjust slider background
+          var halfPoint = $( this ).slider("values", 0) + ($( this ).slider("values", 1) - $( this ).slider("values", 0))/2;
+          var att = "linear-gradient(to right, rgb(255,0,0) "+halfPoint+"%, rgb(0,0,255) "+halfPoint+"%)";
+          $("#divFreqSld").css("background-image", att);
+          // $("#divUI").css("box-shadow",
+          //                 "0px -10px 10px -5px rgba("+
+          //                       ($( this ).slider("values", 0)*2.55) +
+          //                       ","+ (($( this ).slider("values", 1)-$( this ).slider("values", 0))*2.55)+
+          //                       ","+((100-$( this ).slider("values", 1))*2.55)+", 0.5)");
+        },
+        slide: function( event, ui ) {
+          //Determine position for text box
+          let posLeft = $("#handle" + (ui.handleIndex+1)).position().left - $("#text1").outerWidth()/2;
+          //Check if it's too close to left edge
+          if(posLeft < 0){
+            posLeft = 0;
+          }
+          //Check if it's too close to right edge
+          else if(posLeft + $("#text1").outerWidth() + 5 > $(window).width()){
+            posLeft = $(window).width() - $("#text" + (ui.handleIndex+1)).width() - 10;
+          }
+
+          //Move text box
+          if(ui.handleIndex == 0){
+            text1.text(20 + Math.round(ui.values[0]/100*(20000-20)) +"Hz" );
+            text1.css({top: $("#handle1").position().top - textVOffset,
+                       left: posLeft,
+                       position: 'absolute'});
+          }
+          else{
+            text2.text(20 + Math.round(ui.values[1] /100*(20000-20)) +"Hz" );
+            text2.css({top: $("#handle2").position().top - textVOffset,
+                       left: posLeft,
+                       position: 'absolute'});
+          }
+
+          //Adjust slider background
+          var halfPoint = ui.values[0] + (ui.values[1] - ui.values[0])/2;
+          var att = "linear-gradient(to right, rgb(255,0,0) "+halfPoint+"%, rgb(0,0,255) "+halfPoint+"%)";
+          $("#divFreqSld").css("background-image", att);
+          // $("#divUI").css("box-shadow", "0px -5px 10px 10px rgba("+ (ui.values[0]*2.55) +","+ ((ui.values[1]-ui.values[0])*2.55)+","+((100-ui.values[1])*2.55)+", 0.5)");
+        },
+        start: function(event, ui) {
+          if(ui.handleIndex == 0){
+            handle1.css("z-index", 3);
+            handle2.css("z-index", 2);
+            text1.finish();
+            text1.show();
+          }
+          else{
+            handle1.css("z-index", 2);
+            handle2.css("z-index", 3);
+            text2.finish();
+            text2.show();
+          }
+        },
+        stop: function(event, ui){
+          text1.fadeOut(2000);
+          text2.fadeOut(2000);
+        },
+        change: function(event, ui){
+          //Determine position for text box
+          let posLeft = $("#handle" + (ui.handleIndex+1)).position().left - $("#text1").outerWidth()/2;
+          //Check if it's too close to left edge
+          if(posLeft < 0){
+            posLeft = 0;
+          }
+          //Check if it's too close to right edge
+          else if(posLeft + $("#text1").outerWidth() + 5 > $(window).width()){
+            posLeft = $(window).width() - $("#text" + (ui.handleIndex+1)).width() - 10;
+          }
+
+          //Move text box
+          if(ui.handleIndex == 0){
+            text1.text(20 + Math.round(ui.values[0]/100*(20000-20)) +"Hz" );
+            text1.css({top: $("#handle1").position().top - textVOffset,
+                       left: posLeft,
+                       position: 'absolute'});
+          }
+          else{
+            text2.text(20 + Math.round(ui.values[1] /100*(20000-20)) +"Hz" );
+            text2.css({top: $("#handle2").position().top - textVOffset,
+                       left: posLeft,
+                       position: 'absolute'});
+          }
+        }
+      });
+    } );
+  </script>
 </head>
 
 <body>
@@ -19,17 +140,22 @@
     <div id="divCanvas">
     </div>
     <div id="divUI">
-      <div id="divFreqSld"></div>
+      <div id="divFreqSld">
+          <div id="handle1" class="ui-slider-handle"></div>
+          <div id="text1" class="slider-text"></div>
+          <div id="handle2" class="ui-slider-handle"></div>
+          <div id="text2" class="slider-text"></div>
+      </div>
       <div id="divOptions">
         <div id="divOptionCbx1"></div>
         <div id="divOptionCbx2"></div>
         <div id="divOptionCbx3"></div>
         <div id="divMusicBtn"></div>
-        <div id="NumberAgentsSlider" class="slider">
+        <div id="NumberAgentsSlider" class="sldOption">
           <div id="divAgentSld"></div>
           <div id="divAgentLbl"></div>
         </div>
-        <div id="AgentSizeSlider" class="slider">
+        <div id="AgentSizeSlider" class="sldOption">
           <div id="divSizeSld"></div>
           <div id="divSizeLbl"></div>
         </div>

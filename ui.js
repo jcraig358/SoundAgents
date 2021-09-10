@@ -1,4 +1,4 @@
-var sldLowMed, sldMedHigh, sldAgentDensity, sldAgentSize;
+var sldLowMed, sldMedHigh, sldAgentDensity, sldAgentSize, sldFreqs;
 var lblNumAgents, lblAgentSize;
 var cbxSubAmp, cbxShowQTree, cbxShowSpectrum, cbxMic;
 var btnMusic1, btnMusic2, btnMusic3, btnPause;
@@ -14,10 +14,10 @@ function createUI(){
   let divOptionCbx3 = select('#divOptionCbx3');
   divMusicBtn = select('#divMusicBtn');
 
-  sldLowMed = createSlider(0,1,0.20,0.005);
-  sldLowMed.parent(divFreqSld);
-  sldMedHigh = createSlider(0,1,0.50,0.005);
-  sldMedHigh.parent(divFreqSld);
+  // sldLowMed = createSlider(0,1,0.20,0.005);
+  // sldLowMed.parent(divFreqSld);
+  // sldMedHigh = createSlider(0,1,0.50,0.005);
+  // sldMedHigh.parent(divFreqSld);
 
   cbxSubAmp = createCheckbox('Subtract Amplitude', true);
   cbxSubAmp.style('color', 'white');
@@ -35,13 +35,13 @@ function createUI(){
   cbxMic.hide(); //Mic is currently not working
 
   btnMusic1 = createButton('Music1');
-  btnMusic1.mousePressed(() => toggleMusic(music1));
+  btnMusic1.mousePressed(() => toggleMusic(music[0]));
   btnMusic1.parent(divMusicBtn);
   btnMusic2 = createButton('Music2');
-  btnMusic2.mousePressed(() => toggleMusic(music2));
+  btnMusic2.mousePressed(() => toggleMusic(music[1]));
   btnMusic2.parent(divMusicBtn);
   btnMusic3 = createButton('Music3');
-  btnMusic3.mousePressed(() => toggleMusic(music3));
+  btnMusic3.mousePressed(() => toggleMusic(music[2]));
   btnMusic3.parent(divMusicBtn);
   btnPause = createButton('Pause');
   btnPause.mousePressed(() => {if(activeMusic.isPlaying()){activeMusic.pause();}
@@ -66,7 +66,7 @@ function createUI(){
   lblAgentSize.style('margin', '0px');
   lblAgentSize.style('color', 'white');
 
-  uiHeight = parseInt(divUI.style('height'));
+  uiHeight = parseInt($("#divUI").innerHeight());
 }
 //------------------------------------------------------------------------------
 function SldAgentDensityInput(){
@@ -97,8 +97,8 @@ function ResizeSliders(){
   sldWidth = width*0.20;
   sldAgentDensity.size(sldWidth, 20);
   sldAgentSize.size(sldWidth, 20);
-  sldLowMed.size(sldWidth,20);
-  sldMedHigh.size(sldWidth,20);
+  // sldLowMed.size(sldWidth,20);
+  // sldMedHigh.size(sldWidth,20);
 }
 //------------------------------------------------------------------------------
 function toggleMic(){
@@ -115,4 +115,16 @@ function toggleMic(){
 function selectSource(deviceList){
   mic.selectSource(deviceList[0]);
   console.log(deviceList[0].deviceId);
+}
+//------------------------------------------------------------------------------
+function updateUIShadow(amplitude){
+  let intensity = map(amplitude, 0, 0.25, -7.5, 5)
+  values = $("#divFreqSld").slider("values");
+  let red = min((values[0]/33.33)*255,255);
+  let green = min((values[1]-values[0])*255/33.33,255);
+  let blue = min((100-values[1])*255/33.33,255);
+  $("#divUI").css("box-shadow",
+                  "0px -10px 10px "+ intensity +"px rgba("+ red +
+                        ","+ green +
+                        ","+ blue +", 0.75)");
 }
