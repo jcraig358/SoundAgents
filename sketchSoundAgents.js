@@ -135,6 +135,8 @@ function toggleSound(){
 }
 //------------------------------------------------------------------------------
 function toggleMusic(music){
+  if(music == null || !music.isLoaded()){return;}
+
   if(activeMusic == null || (!activeMusic.isPlaying() && !activeMusic.isPaused())) {
     userStartAudio();
     activeMusic = music;
