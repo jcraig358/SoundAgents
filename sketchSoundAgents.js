@@ -51,6 +51,7 @@ function setup() {
   cnv.drop(fileDrop);
   cnv.dragOver(fileOver);
   cnv.dragLeave(fileLeft);
+  generateCanvas();
 }
 //-----------------------------------------------------------------------------
 function draw() {
@@ -157,6 +158,7 @@ function musicEnded(btn){
 }
 //------------------------------------------------------------------------------
 function generateCanvas(){
+  uiHeight = parseInt($("#divUI").innerHeight());
   if(cnv == null){
     cnv = createCanvas(windowWidth, windowHeight - uiHeight);
   }
