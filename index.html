@@ -2,7 +2,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Sound Agents 0.26</title>
+  <title>Sound Agents 0.27</title>
   <link href="styles.css" type="text/css" rel="stylesheet"/>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.min.js"></script>
@@ -148,17 +148,48 @@
           <div id="text2" class="slider-text"></div>
       </div>
       <div id="divOptions">
-        <div id="divOptionCbx1"></div>
-        <div id="divOptionCbx2"></div>
-        <div id="divOptionCbx3"></div>
-        <div id="divMusicBtn"></div>
-        <div id="NumberAgentsSlider" class="sldOption">
-          <div id="divAgentSld"></div>
-          <div id="divAgentLbl"></div>
+        <div id="checkBoxes">
+          <div id="divOptionCbx1"></div>
+          <div id="divOptionCbx2"></div>
+          <div id="divOptionCbx3"></div>
+          <div id="divOptionCbx4"></div>
         </div>
-        <div id="AgentSizeSlider" class="sldOption">
-          <div id="divSizeSld"></div>
-          <div id="divSizeLbl"></div>
+        <div id="divMusicBtn"></div>
+        <div id="SACselectors">
+          <div class="lblSel">
+            <p class="lblSAC">Separation</p>
+            <select id="selSAC1">
+              <option value="0" data-value2="1.1" class="lowFreq">LOW FREQ</option>
+              <option value="1" data-value2="1.2" class="medFreq">MED FREQ</option>
+              <option value="2" data-value2="1.3" class="hiFreq">HI FREQ</option>
+            </select>
+          </div>
+          <div class="lblSel">
+            <p class="lblSAC">Alignment</p>
+            <select id="selSAC2">
+              <option value="0" data-value2="1.1" class="lowFreq">LOW FREQ</option>
+              <option value="1" data-value2="1.2" class="medFreq">MED FREQ</option>
+              <option value="2" data-value2="1.3" class="hiFreq">HI FREQ</option>
+            </select>
+          </div>
+          <div class="lblSel">
+            <p class="lblSAC">Cohesion</p>
+            <select id="selSAC3">
+              <option value="0" data-value2="1.1" class="lowFreq">LOW FREQ</option>
+              <option value="1" data-value2="1.2" class="medFreq">MED FREQ</option>
+              <option value="2" data-value2="1.3" class="hiFreq">HI FREQ</option>
+            </select>
+          </div>
+        </div>
+        <div id="variableSliders">
+          <div id="NumberAgentsSlider" class="sldOption">
+            <div id="divAgentSld"></div>
+            <div id="divAgentLbl"></div>
+          </div>
+          <div id="AgentSizeSlider" class="sldOption">
+            <div id="divSizeSld"></div>
+            <div id="divSizeLbl"></div>
+          </div>
         </div>
       </div>
     </div>

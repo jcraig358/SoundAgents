@@ -1,6 +1,7 @@
-var sldLowMed, sldMedHigh, sldAgentDensity, sldAgentSize, sldFreqs;
+var sldAgentDensity, sldAgentSize, sldFreqs;
+var selSAC;
 var lblNumAgents, lblAgentSize;
-var cbxSubAmp, cbxShowQTree, cbxShowSpectrum, cbxMic;
+var cbxSubAmp, cbxShowQTree, cbxShowSpectrum, cbxFollow, cbxMic;
 var btnMusic1, btnMusic2, btnMusic3, btnPause;
 var divUI, divFreqSld, divOptionCbx, divMusicBtn;
 
@@ -12,41 +13,52 @@ function createUI(){
   let divOptionCbx1 = select('#divOptionCbx1');
   let divOptionCbx2 = select('#divOptionCbx2');
   let divOptionCbx3 = select('#divOptionCbx3');
+  let divOptionCbx4 = select('#divOptionCbx4');
   divMusicBtn = select('#divMusicBtn');
 
-  // sldLowMed = createSlider(0,1,0.20,0.005);
-  // sldLowMed.parent(divFreqSld);
-  // sldMedHigh = createSlider(0,1,0.50,0.005);
-  // sldMedHigh.parent(divFreqSld);
-
-  cbxSubAmp = createCheckbox('Subtract Amplitude', true);
-  cbxSubAmp.style('color', 'white');
-  cbxSubAmp.parent(createDiv().parent(divOptionCbx1));
-  cbxShowQTree = createCheckbox('QTree Bounds', false);
-  cbxShowQTree.style('color', 'white');
+  cbxFollow = createCheckbox('Follow Agent-0', true);
+  cbxFollow.class('checkbox');
+  cbxFollow.parent(divOptionCbx1);
+  cbxShowQTree = createCheckbox('Show QTree', false);
+  cbxShowQTree.class('checkbox');
   cbxShowQTree.parent(divOptionCbx2);
   cbxShowSpectrum = createCheckbox('Spectrum', true);
-  cbxShowSpectrum.style('color', 'white');
+  cbxShowSpectrum.class('checkbox');
   cbxShowSpectrum.parent(divOptionCbx3);
+  cbxSubAmp = createCheckbox('Sub Amplitude', true);
+  cbxSubAmp.class('checkbox');
+  cbxSubAmp.parent(divOptionCbx4);
   cbxMic = createCheckbox('Mic', false);
   cbxMic.parent(divUI);
   cbxMic.changed(toggleMic);
-  cbxMic.style('color', 'white');
+  cbxMic.class('checkbox');
   cbxMic.hide(); //Mic is currently not working
+
+  selSAC = [3];
+  for(let i=0; i<3; i++){
+    selSAC[i] = document.getElementById("selSAC"+(i+1));
+    selSAC[i].selectedIndex = i;
+    selSAC[i].setAttribute('onchange', 'SelSACChanged(this)');
+    SelSACChanged(selSAC[i]);
+  }
 
   btnMusic1 = createButton('Music1');
   btnMusic1.mousePressed(() => toggleMusic(music[0]));
   btnMusic1.parent(divMusicBtn);
+  btnMusic1.style('margin', '2px');
   btnMusic2 = createButton('Music2');
   btnMusic2.mousePressed(() => toggleMusic(music[1]));
   btnMusic2.parent(divMusicBtn);
+  btnMusic2.style('margin', '2px');
   btnMusic3 = createButton('Music3');
   btnMusic3.mousePressed(() => toggleMusic(music[2]));
   btnMusic3.parent(divMusicBtn);
+  btnMusic3.style('margin', '2px');
   btnPause = createButton('Pause');
   btnPause.mousePressed(() => {if(activeMusic.isPlaying()){activeMusic.pause();}
                                else if(activeMusic.isPaused()){activeMusic.play();}});
   btnPause.parent(divMusicBtn);
+  btnPause.style('margin', '2px');
 
   sldAgentDensity = createSlider(0.00001, 0.00100, 0.0002, 0);
   sldAgentDensity.parent(select('#divAgentSld'));
@@ -94,11 +106,9 @@ function SldAgentSizeInput(){
 }
 //------------------------------------------------------------------------------
 function ResizeSliders(){
-  sldWidth = width*0.20;
+  sldWidth = width*0.25;
   sldAgentDensity.size(sldWidth, 20);
   sldAgentSize.size(sldWidth, 20);
-  // sldLowMed.size(sldWidth,20);
-  // sldMedHigh.size(sldWidth,20);
 }
 //------------------------------------------------------------------------------
 function toggleMic(){
@@ -117,6 +127,10 @@ function selectSource(deviceList){
   console.log(deviceList[0].deviceId);
 }
 //------------------------------------------------------------------------------
+function selChanged(event){
+  console.log(this.value());
+}
+//------------------------------------------------------------------------------
 function updateUIShadow(amplitude){
   let intensity = map(amplitude, 0, 0.25, -7.5, 5)
   values = $("#divFreqSld").slider("values");
@@ -127,4 +141,35 @@ function updateUIShadow(amplitude){
                   "0px -10px 10px "+ intensity +"px rgba("+ red +
                         ","+ green +
                         ","+ blue +", 0.75)");
+}
+//------------------------------------------------------------------------------
+function updateSelSACValues(array){
+  for(let i=0; i<3; i++){
+    opts = selSAC[i].options;
+    for(let j=0; j<3; j++){
+      opts[j].setAttribute('data-value2',array[j]);
+    }
+  }
+
+  result = [];
+  for(let i=0; i<3; i++){
+    result.push(parseFloat(selSAC[i].options[selSAC[i].selectedIndex].getAttribute('data-value2')));
+  }
+
+  return result;
+}
+//------------------------------------------------------------------------------
+function SelSACChanged(sel){
+  if(sel.value == 0){
+    sel.style.backgroundColor = "rgb(200,0,0)";
+    sel.style.color = "white";
+  }
+  else if(sel.value == 1){
+    sel.style.backgroundColor = "rgb(0,200,0)";
+    sel.style.color = "black";
+  }
+  else if(sel.value == 2){
+    sel.style.backgroundColor = "rgb(0,0,200)";
+    sel.style.color = "white";
+  }
 }

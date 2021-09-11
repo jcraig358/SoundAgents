@@ -59,7 +59,7 @@ function getAmplitudes(){
 
   //Return a vector containing the amplitudes
   //return createVector(low,med,high);
-  return createVector(low,med,high);
+  return [low,med,high];
 //End getAmplitudes
 }
 

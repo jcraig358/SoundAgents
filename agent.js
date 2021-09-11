@@ -98,7 +98,7 @@ class Agent {
                                                 this.position.y,
                                                 this.range,
                                                 agents,
-                                                this.id == 0);
+                                                this.id == 0  && cbxFollow.checked());
 
     //return agents;
 
@@ -127,7 +127,7 @@ class Agent {
                                                 this.position.y,
                                                 this.range,
                                                 agents,
-                                                this.id == 0);
+                                                this.id == 0 && cbxFollow.checked());
       }
 
       //South reflection
@@ -146,7 +146,7 @@ class Agent {
                                                 alt_y,
                                                 this.range,
                                                 agents,
-                                                this.id == 0);
+                                                this.id == 0 && cbxFollow.checked());
       }
 
       //Corner reflections agents
@@ -156,7 +156,7 @@ class Agent {
                                                    alt_y,
                                                    this.range,
                                                    agents,
-                                                   this.id == 0);
+                                                   this.id == 0 && cbxFollow.checked());
       }
     }
     return agents;
@@ -168,7 +168,7 @@ class Agent {
     for(let other of agents){
       if(other == this){continue;}
       steer_force.add(other.velocity);
-      if(this.id == 0){other.highlight();}
+      if(this.id == 0 && cbxFollow.checked()){other.highlight();}
     }
 
     //Determine desired vector
@@ -259,14 +259,14 @@ class Agent {
     return steer_force;
   }
 //------------------------------------------------------------------------------
-  calcAcceleration(agents, ascVector){
+  calcAcceleration(agents, multipliers){
     var ali = this.alignment(agents);
     var sep = this.separation(agents);
     var coh = this.cohesion(agents);
 
-    ali.mult(ascVector.y);
-    sep.mult(ascVector.x);
-    coh.mult(ascVector.z);
+    sep.mult(multipliers[0]);
+    ali.mult(multipliers[1]);
+    coh.mult(multipliers[2]);
 
     var total_force = createVector();
     total_force.add(ali);
@@ -288,7 +288,7 @@ class Agent {
   }
 //------------------------------------------------------------------------------
   render(){
-    if(this.id == 0){
+    if(this.id == 0 && cbxFollow.checked()){
       stroke(0,250,0);
       noFill();
       circle(this.position.x, this.position.y, this.range*2);
@@ -314,13 +314,13 @@ class Agent {
     this.highlighted = false;
   }
 //------------------------------------------------------------------------------
-  run(base_qtree, ascVector, speed, force, range, size){
+  run(base_qtree, multipliers, speed, force, range, size){
     this.range = range;
     this.size = size;
     this.maxSpeed = speed;
     this.maxForce = force;
     let agents = this.getListOfAgents(base_qtree);
-    this.calcAcceleration(agents, ascVector);
+    this.calcAcceleration(agents, multipliers);
     this.update();
     this.render();
   }

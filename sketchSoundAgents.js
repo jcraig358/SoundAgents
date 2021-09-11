@@ -37,6 +37,7 @@ function preload(){
 //-----------------------------------------------------------------------------
 function setup() {
   music = LoadingUI(initialFiles);
+  ascVector = createVector(0,0,0);
   createUI(); //ui.js
   fft = new p5.FFT(0.8, 1024);
   amp = new p5.Amplitude(0.8);
@@ -72,15 +73,19 @@ function draw() {
   // }
 
   //Get Amplitudes / ASC multipliers
-  let ascVector;
+  var multipliers;
   if((activeMusic != null && activeMusic.isPlaying()) || cbxMic.checked()){
-    ascVector = getAmplitudes();
+    let ascArray = getAmplitudes();
+    multipliers = updateSelSACValues(ascArray);
+    //multipliers = createVector(1.5,1.0,1.0);
   }
   else {
-    ascVector = createVector(1.5,1.0,1.0);
+    multipliers = [1.5,1.0,1.0];
   }
+
+
   fill(255);
-  text("Med-Ali: "+ nf(ascVector.y,2,3) + "\nLow-Sep: " + nf(ascVector.x,2,3) + "\nHigh-Coh: " + nf(ascVector.z,2,3), 10, 50);
+  text("Ali: "+ nf(multipliers[1],2,3) + "\nSep: " + nf(multipliers[0],2,3) + "\nCoh: " + nf(multipliers[2],2,3), 10, 50);
 
   //Run agents------------------
   var velMult = 1;
@@ -92,7 +97,7 @@ function draw() {
   let size = sizeBase * sizeMult;
   text("VelMult: " + nf(velMult, 1, 3) + "; MaxForce: "+ nf(maxForce,1,3) + "; SizeMult: "+nf(sizeMult,1,2), 30, 100);
   for(a of agents){
-    a.run(qtree, ascVector, maxSpeed, maxForce, range, size);
+    a.run(qtree, multipliers, maxSpeed, maxForce, range, size);
   }
   //----------------------------
 
@@ -160,7 +165,7 @@ function musicEnded(btn){
 }
 //------------------------------------------------------------------------------
 function generateCanvas(){
-  uiHeight = parseInt($("#divUI").innerHeight());
+  uiHeight = parseInt($("#divUI").innerHeight()) - 10;
   if(cnv == null){
     cnv = createCanvas(windowWidth, windowHeight - uiHeight);
   }

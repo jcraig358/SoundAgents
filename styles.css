@@ -3,8 +3,41 @@ body {
   width: 100%;
   font-family: Arial, Helvetica, sans-serif;
   margin: 0 auto;
-  overflow: auto;
+  overflow: hidden;
   padding: 0;
+}
+
+p{
+  white-space: nowrap;
+}
+
+select{
+  float: right;
+  text-align: center;
+  background-color: white;
+  font-size: 12px;
+  font-family: sans-serif;
+  font-weight: 700;
+  padding: .1em 0.1em .1em 0.1em;
+  box-shadow: 0 1px 0 1px rgba(0,0,0,0.25);
+  border-radius: .5em;
+  border: 2px solid #222222;
+}
+select:hover{
+  border-color: #888888;
+}
+select:focus{
+  border-color: #888888;
+  outline: none;
+}
+
+option{
+  font-weight: 600;
+}
+
+.checkbox{
+  color: white;
+  white-space: nowrap;
 }
 
 #divCanvas{
@@ -16,26 +49,8 @@ body {
   position: relative;
   z-index: 1;
   padding-top: 10px;
+  padding-bottom: 0.25%;
   width: 100%;
-}
-
-#divOptions {
-  display: grid;
-  margin-top: 1%;
-  grid-template-columns: fit-content(20%) fit-content(20%) auto auto fit-content(30%) fit-content(30%);
-  grid-column-gap: 1%
-}
-
-#divOptionCbx{
-}
-
-#divMusicBtn {
-  display: relative;
-}
-
-.sldOption{
-  margin-top: -1%;
-  display: relative;
 }
 
 #divFreqSld{
@@ -43,6 +58,8 @@ body {
   position: relative;
   z-index: 3;
   background-image: linear-gradient(to right, red 50%, blue 50%);
+  margin-top: -0.5%;
+  margin-bottom: 0.75%
 }
 
 #divFreqSld .ui-slider-range { background: #00ff00; }
@@ -76,7 +93,71 @@ body {
   padding-top: 2px;
   padding-bottom: 2px;
 }
-#text1{
+
+#divOptions {
+  display: grid;
+  grid-template-columns: auto minmax(130px, 25%) auto 27.5%;
+  grid-column-gap: 1%;
+  grid-template-rows: auto;
 }
-#text2{
+
+#checkBoxes{
+  border: solid;
+}
+
+#divMusicBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  border: solid;
+}
+
+#variableSliders{
+  display: relative;
+  border: solid;
+}
+.sldOption{
+  margin-top: -0.5%;
+  display: relative;
+  float: right;
+}
+
+#SACselectors{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  border: solid;
+}
+
+.lblSel{
+  display: flex;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.lblSAC{
+  color: white;
+  margin: 0px;
+  margin-top: 0px;
+  padding-top: 2px;
+  padding-right: 5px;
+  margin-right: 1%;
+  width: 80px;
+  text-align: right;
+}
+
+.lowFreq{
+  color: white;
+  background-color: rgb(200,0,0);
+}
+.medFreq{
+  color: black;
+  background-color: rgb(0,200,0);
+}
+.hiFreq{
+  color: white;
+  background-color: rgb(0,0,200);
 }
