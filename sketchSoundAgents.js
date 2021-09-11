@@ -24,6 +24,7 @@ let initialFiles = ['Singularity.mp3','Solarium.mp3','Flocking.mp3']
 let music = [];    //music files
 let activeMusic;
 let musicToggle;
+let hideUI = false;
 
 let fft;
 let amp;
@@ -63,8 +64,8 @@ function draw() {
   for(a of agents){
     qtree.insert(a);
   }
-  fill(255);
-  text("MinQTreeDepth: "+minQTreeDepth +"; Depth: "+qtreeDepth+ "; AgentsPerQuad: "+agentsPerQTree, 30, 10);
+  // fill(255);
+  // text("MinQTreeDepth: "+minQTreeDepth +"; Depth: "+qtreeDepth+ "; AgentsPerQuad: "+agentsPerQTree, 30, 10);
   // if(qtreeDepth > minQTreeDepth){
   //   agentsPerQTree++;
   // }
@@ -83,9 +84,8 @@ function draw() {
     multipliers = [1.5,1.0,1.0];
   }
 
-
-  fill(255);
-  text("Ali: "+ nf(multipliers[1],2,3) + "\nSep: " + nf(multipliers[0],2,3) + "\nCoh: " + nf(multipliers[2],2,3), 10, 50);
+  //fill(255);
+  //text("Ali: "+ nf(multipliers[1],2,3) + "\nSep: " + nf(multipliers[0],2,3) + "\nCoh: " + nf(multipliers[2],2,3), 10, 50);
 
   //Run agents------------------
   var velMult = 1;
@@ -95,7 +95,8 @@ function draw() {
   let maxForce = maxForceBase * pow(velMult, 1.5) * sizeMult;
   let range = rangeBase * sizeMult;
   let size = sizeBase * sizeMult;
-  text("VelMult: " + nf(velMult, 1, 3) + "; MaxForce: "+ nf(maxForce,1,3) + "; SizeMult: "+nf(sizeMult,1,2), 30, 100);
+  //text("VelMult: " + nf(velMult, 1, 3) + "; MaxForce: "+ nf(maxForce,1,3) + "; SizeMult: "+nf(sizeMult,1,2), 30, 100);
+
   for(a of agents){
     a.run(qtree, multipliers, maxSpeed, maxForce, range, size);
   }
@@ -105,18 +106,12 @@ function draw() {
   if(cbxShowQTree.checked()){ qtree.show(); }
 
   //Draw framerate
-  if(millis() > curr_millis + 1000){
+  if(millis() > curr_millis + 100){
     curr_millis = millis();
-    frate = frameRate();
+    //frate = frameRate();
+    updateSACLabels(multipliers);
   }
-  text(nf(frate,2,0), 10, 30);
-
-  if(musicToggle){
-    text("PLAYING", width-150, 30);
-    if(activeMusic.isPlaying()){
-      text("YES IT IS", width-150, 70)
-    }
-  }
+  //text(nf(frate,2,0), 10, 30);
 
   //Draw file-hover overlay
   if(fileHover){
@@ -165,12 +160,13 @@ function musicEnded(btn){
 }
 //------------------------------------------------------------------------------
 function generateCanvas(){
-  uiHeight = parseInt($("#divUI").innerHeight()) - 10;
+  if(!hideUI){uiHeight = parseInt($("#divUI").outerHeight());}
+  else{uiHeight = 0;}
   if(cnv == null){
     cnv = createCanvas(windowWidth, windowHeight - uiHeight);
   }
   else {
-    resizeCanvas(windowWidth, windowHeight - uiHeight - windowHeight*0.01);
+    resizeCanvas(windowWidth, windowHeight - uiHeight);
   }
   //cnv.mousePressed(toggleSound);
 
@@ -184,7 +180,7 @@ function generateCanvas(){
     agents.push(new Agent(i));
   }
 
-  MinQTreeDepth();
+  //MinQTreeDepth();
 }
 //------------------------------------------------------------------------------
 function windowResized(){
@@ -217,4 +213,18 @@ function fileDrop(file){
     activeMusic = LoadingUI(file, true)[0];
   }
   fileHover = false;
+}
+//------------------------------------------------------------------------------
+function keyTyped(){
+  if(key === 'F' || key === 'f'){
+    hideUI = !hideUI;
+    if(hideUI){
+      divUI.hide();
+      generateCanvas();
+    }
+    else{
+      divUI.show();
+      generateCanvas();
+    }
+  }
 }

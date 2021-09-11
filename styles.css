@@ -49,7 +49,7 @@ option{
   position: relative;
   z-index: 1;
   padding-top: 10px;
-  padding-bottom: 0.25%;
+  padding-bottom: 5px;
   width: 100%;
 }
 
@@ -58,8 +58,8 @@ option{
   position: relative;
   z-index: 3;
   background-image: linear-gradient(to right, red 50%, blue 50%);
-  margin-top: -0.5%;
-  margin-bottom: 0.75%
+  margin-top: -5px;
+  margin-bottom: 8px;
 }
 
 #divFreqSld .ui-slider-range { background: #00ff00; }
@@ -102,7 +102,7 @@ option{
 }
 
 #checkBoxes{
-  border: solid;
+  padding-left: 5px;
 }
 
 #divMusicBtn {
@@ -110,17 +110,21 @@ option{
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  border: solid;
+}
+
+button{
+  font-weight: 700;
 }
 
 #variableSliders{
   display: relative;
-  border: solid;
 }
 .sldOption{
-  margin-top: -0.5%;
-  display: relative;
-  float: right;
+  margin-top: -2px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 #SACselectors{
@@ -128,7 +132,6 @@ option{
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  border: solid;
 }
 
 .lblSel{
@@ -160,4 +163,15 @@ option{
 .hiFreq{
   color: white;
   background-color: rgb(0,0,200);
+}
+
+.sacVal{
+  color: white;
+  margin: 0px;
+  margin-top: 0px;
+  padding-top: 2px;
+  padding-right: 2px;
+  width: 50px;
+  text-align: right;
+  background-color: #000000;
 }

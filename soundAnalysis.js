@@ -45,7 +45,7 @@ function getAmplitudes(){
   //Draw spectrum
   if(cbxShowSpectrum.checked()){
     rectMode(CORNER);
-    text("Spec-length: " + spectrum.length + "; Amplitude: "+ nf(level,1,2) + "; lowmed: "+perMed+"; medHi: "+perHigh, 30, 150);
+    //text("Spec-length: " + spectrum.length + "; Amplitude: "+ nf(level,1,2) + "; lowmed: "+perMed+"; medHi: "+perHigh, 30, 150);
     for(let i=0; i<spectrum.length; i++){
       if(i < spectrum.length*perMed){ fill(255,0,0); }
       else if(i < spectrum.length*perHigh){ fill(0,255,0); }

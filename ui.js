@@ -1,6 +1,6 @@
 var sldAgentDensity, sldAgentSize, sldFreqs;
 var selSAC;
-var lblNumAgents, lblAgentSize;
+var lblNumAgents, lblAgentSize, lblSep, lblAli, lblCoh;
 var cbxSubAmp, cbxShowQTree, cbxShowSpectrum, cbxFollow, cbxMic;
 var btnMusic1, btnMusic2, btnMusic3, btnPause;
 var divUI, divFreqSld, divOptionCbx, divMusicBtn;
@@ -41,6 +41,9 @@ function createUI(){
     selSAC[i].setAttribute('onchange', 'SelSACChanged(this)');
     SelSACChanged(selSAC[i]);
   }
+  lblSep = select('#lblSep');
+  lblAli = select('#lblAli');
+  lblCoh = select('#lblCoh');
 
   btnMusic1 = createButton('Music1');
   btnMusic1.mousePressed(() => toggleMusic(music[0]));
@@ -172,4 +175,12 @@ function SelSACChanged(sel){
     sel.style.backgroundColor = "rgb(0,0,200)";
     sel.style.color = "white";
   }
+}
+//------------------------------------------------------------------------------
+function updateSACLabels(array){
+  if(array == null){ return; }
+
+  lblSep.html(nf(array[0],1,2));
+  lblAli.html(nf(array[1],1,2));
+  lblCoh.html(nf(array[2],1,2));
 }
