@@ -25,6 +25,7 @@ let music = [];    //music files
 let activeMusic;
 let musicToggle;
 let hideUI = false;
+let totalOffset = 0;
 
 let fft;
 let amp;
@@ -53,6 +54,7 @@ function setup() {
   cnv.drop(fileDrop);
   cnv.dragOver(fileOver);
   cnv.dragLeave(fileLeft);
+  cnv.mousePressed(canvasClicked)
   generateCanvas();
 }
 //-----------------------------------------------------------------------------
@@ -215,16 +217,37 @@ function fileDrop(file){
   fileHover = false;
 }
 //------------------------------------------------------------------------------
+function toggleUI(){
+  hideUI = !hideUI;
+  if(hideUI){
+    divUI.hide();
+    generateCanvas();
+  }
+  else{
+    divUI.show();
+    generateCanvas();
+  }
+}
+//------------------------------------------------------------------------------
 function keyTyped(){
   if(key === 'F' || key === 'f'){
-    hideUI = !hideUI;
-    if(hideUI){
-      divUI.hide();
-      generateCanvas();
-    }
-    else{
-      divUI.show();
-      generateCanvas();
-    }
+    toggleUI();
   }
+}
+//------------------------------------------------------------------------------
+function canvasClicked(){
+  toggleUI();
+}
+//------------------------------------------------------------------------------
+function mouseWheel(event){
+  if(hideUI){return false;}
+
+  totalOffset += event.delta/10;
+  totalOffset = constrain(totalOffset, 0, uiHeight);
+  if(totalOffset <= 0 || totalOffset >= uiHeight){return false;}
+
+  divUI.style('transform', 'translateY('+event.delta/10+'px)');
+  resizeCanvas(windowWidth, windowHeight-uiHeight+totalOffset);
+
+  return false; //prevent default behaviour
 }
