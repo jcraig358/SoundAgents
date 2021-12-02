@@ -2,7 +2,7 @@
 ### Created by <a href="https://johncraig.dev">John Craig</a>
 Sound Agents is a recreation of the Music Boids simulation that I created in conjuction with the <a href="https://www.m3lab.org/">M3Lab</a> at the University of Calgary Werklund School of Education. Based on the flocking algorithm created by Craig Reynolds' each boid (agent) determines if it should move away, move towards, or align itself with neighbouring boids. These forces are then modified by the frequencies of the sound that is playing resulting in the boids moving with the music. How this program differentiates from Music Boids is that this version uses a quad-tree to sort the boids such that a single boid does not have to analyze forces for every other boid, just the ones near it.
 
-View the full ReadMe <a href="here.
+View the full ReadMe <a href="https://github.com/jcraig358/SoundAgents/blob/main/README.md">here</a>.
 
 ### Playing sounds
 Some pre-made music is provided and can be played by pressing the "Music#" buttons. Alternatively, you can drop your own .mp3 or .wav file onto the boid area.
