@@ -35,6 +35,7 @@ let mic;
 function preload(){
   soundFormats('mp3','wav');
   musicToggle = false;
+  setupInfoUI();
 }
 //-----------------------------------------------------------------------------
 function setup() {
@@ -120,7 +121,7 @@ function draw() {
     background(0,200,0,75);
   }
 
-  updateUIShadow(max(amp.getLevel(), 0));
+  updateUIShadow(max(amp.getLevel(), 0))
 }
 //------------------------------------------------------------------------------
 function toggleSound(){
@@ -187,6 +188,9 @@ function generateCanvas(){
 //------------------------------------------------------------------------------
 function windowResized(){
   generateCanvas();
+  if(infoActive){
+    updateInfoUI();
+  }
 }
 //------------------------------------------------------------------------------
 function MinQTreeDepth(){
@@ -221,11 +225,13 @@ function toggleUI(){
   hideUI = !hideUI;
   if(hideUI){
     divUI.hide();
-    generateCanvas();
+    resizeCanvas(windowWidth, windowHeight);
+    //generateCanvas();
   }
   else{
     divUI.show();
-    generateCanvas();
+    resizeCanvas(windowWidth, windowHeight-uiHeight);
+    //generateCanvas();
   }
 }
 //------------------------------------------------------------------------------
@@ -239,15 +245,15 @@ function canvasClicked(){
   toggleUI();
 }
 //------------------------------------------------------------------------------
-function mouseWheel(event){
-  if(hideUI){return false;}
-
-  totalOffset += event.delta/10;
-  totalOffset = constrain(totalOffset, 0, uiHeight);
-  if(totalOffset <= 0 || totalOffset >= uiHeight){return false;}
-
-  divUI.style('transform', 'translateY('+event.delta/10+'px)');
-  resizeCanvas(windowWidth, windowHeight-uiHeight+totalOffset);
-
-  return false; //prevent default behaviour
-}
+// function mouseWheel(event){
+//   if(hideUI){return false;}
+//
+//   totalOffset += event.delta/10;
+//   totalOffset = constrain(totalOffset, 0, uiHeight);
+//   resizeCanvas(windowWidth, windowHeight-uiHeight+totalOffset);
+//   if(totalOffset <= 0 || totalOffset >= uiHeight){return false;}
+//   divUI.style('transform', 'translateY('+event.delta/10+'px)');
+//
+//
+//   return false; //prevent default behaviour
+// }

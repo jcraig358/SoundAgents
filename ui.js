@@ -2,10 +2,14 @@ var sldAgentDensity, sldAgentSize, sldFreqs;
 var selSAC;
 var lblNumAgents, lblAgentSize, lblSep, lblAli, lblCoh;
 var cbxSubAmp, cbxShowQTree, cbxShowSpectrum, cbxFollow, cbxMic;
-var btnMusic1, btnMusic2, btnMusic3, btnPause;
+var btnMusic1, btnMusic2, btnMusic3, btnPause, btnInfo, btnReset;
 var divUI, divFreqSld, divOptionCbx, divMusicBtn;
 
 var uiHeight;
+
+const defaultDensity = 0.0002;
+const defaultSize = 1.0;
+var defaultLowMed, defaultMedHi;
 
 function createUI(){
   divUI = select("#divUI")
@@ -46,24 +50,39 @@ function createUI(){
   lblCoh = select('#lblCoh');
 
   btnMusic1 = createButton('Music1');
-  btnMusic1.mousePressed(() => toggleMusic(music[0]));
+  btnMusic1.mouseClicked(() => toggleMusic(music[0]));
   btnMusic1.parent(divMusicBtn);
   btnMusic1.style('margin', '2px');
+
   btnMusic2 = createButton('Music2');
-  btnMusic2.mousePressed(() => toggleMusic(music[1]));
+  btnMusic2.mouseClicked(() => toggleMusic(music[1]));
   btnMusic2.parent(divMusicBtn);
   btnMusic2.style('margin', '2px');
+
   btnMusic3 = createButton('Music3');
-  btnMusic3.mousePressed(() => toggleMusic(music[2]));
+  btnMusic3.mouseClicked(() => toggleMusic(music[2]));
   btnMusic3.parent(divMusicBtn);
   btnMusic3.style('margin', '2px');
+
   btnPause = createButton('Pause');
-  btnPause.mousePressed(() => {if(activeMusic.isPlaying()){activeMusic.pause();}
+  btnPause.mouseClicked(() => {if(activeMusic.isPlaying()){activeMusic.pause();}
                                else if(activeMusic.isPaused()){activeMusic.play();}});
   btnPause.parent(divMusicBtn);
   btnPause.style('margin', '2px');
 
-  sldAgentDensity = createSlider(0.00001, 0.00100, 0.0002, 0);
+  btnInfo = createButton('Info');
+  btnInfo.mouseClicked(() => {if(!infoActive){showInfoUI();}
+                              else {hideInfoUI();}});
+  btnInfo.parent(divMusicBtn);
+  btnInfo.style('margin', '2px');
+
+  btnReset = createButton('Reset');
+  btnReset.mouseClicked(() => { resetSliders();
+                                generateCanvas()});
+  btnReset.parent(divMusicBtn);
+  btnReset.style('margin', '2px');
+
+  sldAgentDensity = createSlider(0.00001, 0.00100, defaultDensity, 0);
   sldAgentDensity.parent(select('#divAgentSld'));
   sldAgentDensity.size(250, 20);
   sldAgentDensity.input(SldAgentDensityInput);
@@ -72,7 +91,7 @@ function createUI(){
   lblNumAgents.style('margin', '0px');
   lblNumAgents.style('color', 'white');
 
-  sldAgentSize = createSlider(0.25, 5.0, 1.0, 0);
+  sldAgentSize = createSlider(0.25, 5.0, defaultSize, 0);
   sldAgentSize.parent(select('#divSizeSld'));
   sldAgentSize.size(250, 20);
   sldAgentSize.input(SldAgentSizeInput);
@@ -82,6 +101,11 @@ function createUI(){
   lblAgentSize.style('color', 'white');
 
   uiHeight = parseInt($("#divUI").innerHeight());
+
+  //Pull starting freq slider values
+  var defVal = $("#divFreqSld").slider("values");
+  defaultLowMed = defVal[0];
+  defaultMedHi = defVal[1];
 }
 //------------------------------------------------------------------------------
 function SldAgentDensityInput(){
@@ -112,6 +136,16 @@ function ResizeSliders(){
   sldWidth = width*0.25;
   sldAgentDensity.size(sldWidth, 20);
   sldAgentSize.size(sldWidth, 20);
+}
+//------------------------------------------------------------------------------
+function resetSliders(){
+  sldAgentDensity.value(defaultDensity);
+  SldAgentDensityInput();
+  sldAgentSize.value(defaultSize);
+  SldAgentSizeInput();
+  $("#divFreqSld").slider("values",0,defaultLowMed);
+  $("#divFreqSld").slider("values",1,defaultMedHi);
+  if(activeMusic != null && activeMusic.isPlaying) activeMusic.pause();
 }
 //------------------------------------------------------------------------------
 function toggleMic(){
@@ -184,3 +218,4 @@ function updateSACLabels(array){
   lblAli.html(nf(array[1],1,2));
   lblCoh.html(nf(array[2],1,2));
 }
+//------------------------------------------------------------------------------
