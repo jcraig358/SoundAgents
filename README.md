@@ -6,9 +6,9 @@ Some pre-made music is provided and can be played by pressing the "Music#" butto
 
 ### Adjusting Frequency
 By default, the flocking forces are governed as follows:
-<br>&emspLow frequencies = move away from neighbours
-<br>&emspMed frequencies = align with neighbours
-<br>&emspHigh frequencies = move toward neighbours
+<br>&emsp Low frequencies = move away from neighbours
+<br>&emsp Med frequencies = align with neighbours
+<br>&emsp High frequencies = move toward neighbours
 <br>The top slider (red/green/blue slider) determines what defines low/med/high frequencies. They can be adjusted by moving the handles on the slider, thus increasing or decreasing the amount of force that the respective range of frequency applies. The force is determined by using the combined amplitudes within each range such that more frequencies in the range means increasing the total amplitude to use to calculate the force.
 <br>
 <br>It is also possible to change which frequency range governs each force by selecting the appropriate range beside each force.
