@@ -25,7 +25,7 @@ The boid density can be changed using the sliders on the right. The top of these
 The lower of the two sliders controls the size of the boids. A larger size can be used to compensate for less boids. Not only does their appearance increase, but so does their vision radius and can thus increase the number of neighbours it can see. However, too large can overcrowd the play space diminishing the flocking dynamic. Alternatively, a smaller boid size can decrease the chaos caused by too many boids as well as decrease the number of neighbours which would aide performance.
 
 ### Options
-Follow Agent-0: Highlight one of the boids by showing its vision radius, the quad-tree sections being analyzed, and the neighbours considered in the force calculations.
+<i>Follow Agent-0:</i> Highlight one of the boids by showing its vision radius, the quad-tree sections being analyzed, and the neighbours considered in the force calculations.
 <br>Show Q-Tree: Show the entire quad-tree structure. The can be helpful in monitoring boid density.
 <br>Spectrum: Show/hide the frequency spectrum visualization. The specturm helps to know how much amplitude is in each frequency range.
 <br>Sub Amplitude: Enable/disable subtracting the average amplitube from each frequency. This allows for only the most prominant sounds to be be used in calculations. However, the fact that the human ear can better hear certain frequencies is not considered in this aspect (higher and mid frequencies are more noticable with less amplitude than low frequency sounds).
