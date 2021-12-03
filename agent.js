@@ -184,7 +184,7 @@ class Agent {
     //Create zero vector
     let steer_force = createVector(0,0);
     let neighbourFactor = 2.0;
-    let neighbourCutoff = 1.25;
+    let neighbourCutoff = 1.25; //Divisor for neighbour range (1.0 = full vision radius)
     let div_compensator = 1.5;
 
     for(let other of agents){

@@ -20,7 +20,9 @@ let frate = 0;
 
 let cnv; //Canvas
 let fileHover = false;
-let initialFiles = ['Singularity.mp3','Solarium.mp3','Flocking.mp3']
+let initialFiles = ['assets/dreams.mp3','assets/endlessmotion.mp3',
+                    'assets/house.mp3','assets/moose.mp3',
+                    'assets/popdance.mp3','assets/summer.mp3'];
 let music = [];    //music files
 let activeMusic;
 let musicToggle;
@@ -245,7 +247,7 @@ function canvasClicked(){
   toggleUI();
 }
 //------------------------------------------------------------------------------
-// function mouseWheel(event){
+function mouseWheel(event){
 //   if(hideUI){return false;}
 //
 //   totalOffset += event.delta/10;
@@ -256,4 +258,4 @@ function canvasClicked(){
 //
 //
 //   return false; //prevent default behaviour
-// }
+}

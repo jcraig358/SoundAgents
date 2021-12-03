@@ -83,9 +83,9 @@ function finishedLoadingUIText(result){
   let full_str = "";
 
   //Pull the title and created by
-  //full_str += removeLeadingHashtag(result[0]) + "<br>";
-  full_str += removeLeadingHashtag(result[1]) + "<br><br>";
-  result = result.slice(2);
+  full_str += removeLeadingHashtag(result[1]) + "<br>";
+  full_str += removeLeadingHashtag(result[2]) + "<br><br>"
+  result = result.slice(3);
 
   //Add the rest of the info text
   for(let str of result){

@@ -1,3 +1,0 @@
-Sound Agents is a re-design of the Flocking Sounds project which utilizes Craig
-Reynolds’ flocking algorithm. This version was designed to run in a browser to
-be enjoyed on desktop or mobile.

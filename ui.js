@@ -49,38 +49,64 @@ function createUI(){
   lblAli = select('#lblAli');
   lblCoh = select('#lblCoh');
 
+  let buttonSize = createVector(60,20);
+
   btnMusic1 = createButton('Music1');
   btnMusic1.mouseClicked(() => toggleMusic(music[0]));
   btnMusic1.parent(divMusicBtn);
   btnMusic1.style('margin', '2px');
+  btnMusic1.size(buttonSize.x, buttonSize.y);
 
   btnMusic2 = createButton('Music2');
   btnMusic2.mouseClicked(() => toggleMusic(music[1]));
   btnMusic2.parent(divMusicBtn);
   btnMusic2.style('margin', '2px');
+  btnMusic2.size(buttonSize.x, buttonSize.y);
 
   btnMusic3 = createButton('Music3');
   btnMusic3.mouseClicked(() => toggleMusic(music[2]));
   btnMusic3.parent(divMusicBtn);
   btnMusic3.style('margin', '2px');
+  btnMusic3.size(buttonSize.x, buttonSize.y);
+
+  btnMusic4 = createButton('Music4');
+  btnMusic4.mouseClicked(() => toggleMusic(music[3]));
+  btnMusic4.parent(divMusicBtn);
+  btnMusic4.style('margin', '2px');
+  btnMusic4.size(buttonSize.x, buttonSize.y);
+
+  btnMusic5 = createButton('Music5');
+  btnMusic5.mouseClicked(() => toggleMusic(music[4]));
+  btnMusic5.parent(divMusicBtn);
+  btnMusic5.style('margin', '2px');
+  btnMusic5.size(buttonSize.x, buttonSize.y);
+
+  btnMusic6 = createButton('Music6');
+  btnMusic6.mouseClicked(() => toggleMusic(music[5]));
+  btnMusic6.parent(divMusicBtn);
+  btnMusic6.style('margin', '2px');
+  btnMusic6.size(buttonSize.x, buttonSize.y);
 
   btnPause = createButton('Pause');
   btnPause.mouseClicked(() => {if(activeMusic.isPlaying()){activeMusic.pause();}
                                else if(activeMusic.isPaused()){activeMusic.play();}});
   btnPause.parent(divMusicBtn);
   btnPause.style('margin', '2px');
+  btnPause.size(buttonSize.x, buttonSize.y);
 
   btnInfo = createButton('Info');
   btnInfo.mouseClicked(() => {if(!infoActive){showInfoUI();}
                               else {hideInfoUI();}});
   btnInfo.parent(divMusicBtn);
   btnInfo.style('margin', '2px');
+  btnInfo.size(buttonSize.x, buttonSize.y);
 
   btnReset = createButton('Reset');
   btnReset.mouseClicked(() => { resetSliders();
                                 generateCanvas()});
   btnReset.parent(divMusicBtn);
   btnReset.style('margin', '2px');
+  btnReset.size(buttonSize.x, buttonSize.y);
 
   sldAgentDensity = createSlider(0.00001, 0.00100, defaultDensity, 0);
   sldAgentDensity.parent(select('#divAgentSld'));
